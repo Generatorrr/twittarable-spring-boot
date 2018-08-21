@@ -1,0 +1,25 @@
+<html>
+<body>
+<div>
+    <div>
+        <form method="post">
+            <input type="text" name="text" placeholder="Input your message" />
+            <input type="text" name="tag" placeholder="Input your tag" />
+            <button type="submit">Post message</button>
+        </form>
+    </div>
+    <form method="post" action="filter">
+        <input type="text" name="filter" placeholder="Input message's tag you want to find" />
+        <button type="submit">Find</button>
+    </form>
+    <div>Messages list:</div>
+    {{#messages}}
+        <div>
+            <b>{{id}}</b>
+            <span>{{text}}</span>
+            <i>{{tag}}</i>
+        </div>
+    {{/messages}}
+</div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-package com.example.twittarablespringboot.domain;
+package com.example.twittarablespringboot.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

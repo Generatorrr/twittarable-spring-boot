@@ -5,6 +5,7 @@ import com.example.twittarablespringboot.entity.Role;
 import com.example.twittarablespringboot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -23,12 +24,12 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addNewAccount(User user, Map<String, Object> model) {
+    public String addNewAccount(User user, Model model) {
 
         User userFromDB = userRepository.findByUsername(user.getUsername());
 
         if(null != userFromDB) {
-            model.put("accountExists", "User with the name has already exists!");
+            model.addAttribute("userAlreadytExists", "User with the name has already exists!");
             return "registration";
         }
 

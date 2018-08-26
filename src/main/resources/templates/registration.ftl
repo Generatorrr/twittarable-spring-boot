@@ -3,6 +3,6 @@
 
 <@c.page>
     Add new user
-    ${accountExists??}
+    ${userAlreadytExists?ifExists}
     <@l.login "/registration" />
 </@c.page>

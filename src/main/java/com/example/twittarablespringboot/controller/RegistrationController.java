@@ -1,8 +1,8 @@
 package com.example.twittarablespringboot.controller;
 
-import com.example.twittarablespringboot.entity.Account;
+import com.example.twittarablespringboot.entity.User;
 import com.example.twittarablespringboot.entity.Role;
-import com.example.twittarablespringboot.repository.AccountRepository;
+import com.example.twittarablespringboot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,7 @@ import java.util.Map;
 public class RegistrationController {
 
     @Autowired
-    private AccountRepository accountRepository;
+    private UserRepository userRepository;
 
     @GetMapping("/registration")
     public String registration() {
@@ -23,18 +23,18 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addNewAccount(Account account, Map<String, Object> model) {
+    public String addNewAccount(User user, Map<String, Object> model) {
 
-        Account accountFromDB = accountRepository.findByUsername(account.getUsername());
+        User userFromDB = userRepository.findByUsername(user.getUsername());
 
-        if(null != accountFromDB) {
+        if(null != userFromDB) {
             model.put("accountExists", "User with the name has already exists!");
             return "registration";
         }
 
-        account.setActive(true);
-        account.setRoles(Collections.singleton(Role.USER));
-        accountRepository.save(account);
+        user.setActive(true);
+        user.setRoles(Collections.singleton(Role.USER));
+        userRepository.save(user);
 
         return "redirect:/login";
 

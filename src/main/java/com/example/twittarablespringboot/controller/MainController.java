@@ -63,7 +63,7 @@ public class MainController {
             ) throws IOException {
         Message message = new Message(text, tag, user);
 
-        if (null != file) {
+        if (null != file && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
 
             if(!uploadDir.exists()) {

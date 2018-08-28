@@ -1,8 +1,10 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
+    <h3>Hello, friend!!!</h3>
     <div>
-        Hello, user!!!
+        <p>
+            This application is my first experience with Spring framework!!!
+        </p>
     </div>
-<a href="/main">Main Page</a>
 </@c.page>

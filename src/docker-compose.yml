@@ -1,0 +1,16 @@
+version: '2'
+services:
+
+  ### Mysql container
+  mysql:
+        image: mysql:5.7
+        restart: always
+        ports:
+            - 3306:3306
+        volumes:
+            - /var/lib/twittarablespringboot:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=twittarablespringboot
+            - MYSQL_USER=twittarable
+            - MYSQL_PASSWORD=root

@@ -117,4 +117,24 @@ public class User implements UserDetails {
     {
         this.activationCode = activationCode;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if ( !(other instanceof User) ) return false;
+
+        final User user = (User) other;
+
+        if ( !user.getEmail().equals( getEmail() ) ) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        result = getPassword().hashCode();
+        result = 30 * result * getEmail().length();
+        return result;
+    }
 }

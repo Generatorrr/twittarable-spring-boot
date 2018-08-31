@@ -16,7 +16,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.swing.text.html.HTMLDocument;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @Controller
+@Api(value="User API", description="User operations")
 @RequestMapping("/user")
 public class UserController {
 
@@ -26,6 +34,13 @@ public class UserController {
         this.userService = userService;
     }
 
+    @ApiOperation(value = "Get all users", response = HTMLDocument.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 400, message = "Bad request"),
+            @ApiResponse(code = 403, message = "Forbidden")
+        }
+    )
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping
     public String getAllUsers(Model model) {
@@ -34,6 +49,13 @@ public class UserController {
         return "userList";
     }
 
+    @ApiOperation(value = "Get specific user", response = HTMLDocument.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 400, message = "Bad request"),
+            @ApiResponse(code = 403, message = "Forbidden")
+        }
+    )
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("{user}")
     public String getUserEditForm(@PathVariable User user, Model model) {
@@ -43,6 +65,13 @@ public class UserController {
         return "userEdit";
     }
 
+    @ApiOperation(value = "Change user data", response = HTMLDocument.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 400, message = "Bad request"),
+            @ApiResponse(code = 403, message = "Forbidden")
+        }
+    )
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping
     public String saveUser(
@@ -55,7 +84,14 @@ public class UserController {
         
         return "redirect:/user";
     }
-    
+
+    @ApiOperation(value = "Get yourself profile", response = HTMLDocument.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 400, message = "Bad request"),
+            @ApiResponse(code = 403, message = "Forbidden")
+        }
+    )
     @GetMapping("profile")
     public String getProfile(Model model, @AuthenticationPrincipal User user) {
         
@@ -63,7 +99,14 @@ public class UserController {
         model.addAttribute("email", user.getEmail());
         return "profile";
     }
-    
+
+    @ApiOperation(value = "Get yourself profile", response = HTMLDocument.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 400, message = "Bad request"),
+            @ApiResponse(code = 403, message = "Forbidden")
+        }
+    )
     @PostMapping("profile")
     public String updateProfile(
             @AuthenticationPrincipal User user,

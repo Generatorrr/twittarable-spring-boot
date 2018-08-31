@@ -17,7 +17,15 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.swing.text.html.HTMLDocument;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @Controller
+@Api(value="Main API controller", description="Operations with messages, media files etc.")
 public class MainController {
 
     @Value("${upload.path}")
@@ -29,11 +37,22 @@ public class MainController {
         this.messageRepository = messageRepository;
     }
 
+    @ApiOperation(value = "Get greeting page", response = HTMLDocument.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully return needed page")
+        }
+    )
     @GetMapping("/")
     public String greeting() {
         return "greeting";
     }
 
+    @ApiOperation(value = "Main page", response = HTMLDocument.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully return needed page"),
+            @ApiResponse(code = 403, message = "Forbidden")
+        }
+    )
     @GetMapping("/main")
     public String main(
             @RequestParam(required = false, defaultValue = "") String filter,
@@ -52,6 +71,13 @@ public class MainController {
         return "main";
     }
 
+    @ApiOperation(value = "Post a message", response = HTMLDocument.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully return needed page"),
+            @ApiResponse(code = 400, message = "Bad request"),
+            @ApiResponse(code = 403, message = "Forbidden")
+        }
+    )
     @PostMapping("/main")
     public String addMessage
             (

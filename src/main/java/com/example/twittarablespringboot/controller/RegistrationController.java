@@ -9,7 +9,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.swing.text.html.HTMLDocument;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @Controller
+@Api(value="Registration API", description="Registrations/activations operations")
 public class RegistrationController {
 
     private final UserService userService;
@@ -19,11 +27,22 @@ public class RegistrationController {
         this.userService = userService;
     }
 
+    @ApiOperation(value = "Get registration page", response = HTMLDocument.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully return needed page")
+        }
+    )
     @GetMapping("/registration")
     public String registration() {
         return "registration";
     }
 
+    @ApiOperation(value = "Register new user", response = HTMLDocument.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Register successfull"),
+            @ApiResponse(code = 400, message = "Bad request")
+        }
+    )
     @PostMapping("/registration")
     public String addNewAccount(User user, Model model) {
 
@@ -35,7 +54,13 @@ public class RegistrationController {
         return "redirect:/login";
 
     }
-    
+
+    @ApiOperation(value = "Activate user", response = HTMLDocument.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User activated successfully"),
+            @ApiResponse(code = 200, message = "Activation code is not found!")
+        }
+    )
     @GetMapping("/activation/{code}")
     public String activateAccount(Model model, @PathVariable String code) {
         

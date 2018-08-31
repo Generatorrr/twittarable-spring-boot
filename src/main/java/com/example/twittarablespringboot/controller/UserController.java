@@ -3,7 +3,10 @@ package com.example.twittarablespringboot.controller;
 import com.example.twittarablespringboot.entity.Role;
 import com.example.twittarablespringboot.entity.User;
 import com.example.twittarablespringboot.repository.UserRepository;
+import com.example.twittarablespringboot.service.UserService;
+
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,22 +18,23 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
-@PreAuthorize("hasAnyAuthority('ADMIN')")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping
     public String getAllUsers(Model model) {
 
-        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("users", userService.findAll());
         return "userList";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("{user}")
     public String getUserEditForm(@PathVariable User user, Model model) {
 
@@ -39,6 +43,7 @@ public class UserController {
         return "userEdit";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping
     public String saveUser(
             @RequestParam String username,
@@ -46,19 +51,27 @@ public class UserController {
             @RequestParam("userId") User user
     ) {
 
-        Set<String> roles = Arrays
-                .stream(Role.values())
-                .map(Role::name)
-                .collect(Collectors.toSet());
-
-        user.getRoles().clear();
-        for (String key : form.keySet()) {
-            if (roles.contains(key)) {
-                user.getRoles().add(Role.valueOf(key));
-            }
-        }
-        user.setUsername(username);
-        userRepository.save(user);
+        userService.saveUser(username, form, user);
+        
         return "redirect:/user";
+    }
+    
+    @GetMapping("profile")
+    public String getProfile(Model model, @AuthenticationPrincipal User user) {
+        
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("email", user.getEmail());
+        return "profile";
+    }
+    
+    @PostMapping("profile")
+    public String updateProfile(
+            @AuthenticationPrincipal User user,
+            @RequestParam String password,
+            @RequestParam String email
+    ) {
+        
+        userService.updateProfile(user, password, email);
+        return "redirect:/user/profile";
     }
 }

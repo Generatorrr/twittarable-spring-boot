@@ -29,6 +29,8 @@ public class Message {
 
     private String filename;
 
+    private boolean edited;
+
     public Message() {
 
     }
@@ -82,5 +84,13 @@ public class Message {
 
     public String getAuthorName() {
         return null != this.author ? this.author.getUsername() : "No Author";
+    }
+
+    public boolean isEdited() {
+        return edited;
+    }
+
+    public void setEdited(boolean edited) {
+        this.edited = edited;
     }
 }

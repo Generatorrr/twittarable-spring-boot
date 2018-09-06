@@ -5,16 +5,20 @@ import com.example.twittarablespringboot.service.UserService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.swing.text.html.HTMLDocument;
+import javax.validation.Valid;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+
+import java.util.Map;
 
 @Controller
 @Api(value="Registration API", description="Registrations/activations operations")
@@ -44,10 +48,19 @@ public class RegistrationController {
         }
     )
     @PostMapping("/registration")
-    public String addNewAccount(User user, Model model) {
+    public String addNewAccount(@Valid User user, BindingResult bindingResult, Model model) {
 
+        if (null != user.getPassword() && user.getPassword().equals(user.getPassword2())) {
+            model.addAttribute("passwordError", "Passwords are different!");
+        }
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            model.mergeAttributes(errorsMap);
+
+            return "registration";
+        }
         if(!userService.addUser(user)) {
-            model.addAttribute("userAlreadytExists", "User with the name has already exists!");
+            model.addAttribute("usernameError", "User with the name has already exists!");
             return "registration";
         }
         

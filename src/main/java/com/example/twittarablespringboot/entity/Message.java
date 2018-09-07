@@ -1,5 +1,7 @@
 package com.example.twittarablespringboot.entity;
 
+import com.example.twittarablespringboot.entity.Users.User;
+
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cache;
 import org.hibernate.validator.constraints.Length;

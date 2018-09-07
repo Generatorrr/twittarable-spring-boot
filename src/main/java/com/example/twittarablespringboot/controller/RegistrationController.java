@@ -1,6 +1,6 @@
 package com.example.twittarablespringboot.controller;
 
-import com.example.twittarablespringboot.entity.User;
+import com.example.twittarablespringboot.entity.Users.User;
 import com.example.twittarablespringboot.service.UserService;
 
 import org.springframework.stereotype.Controller;

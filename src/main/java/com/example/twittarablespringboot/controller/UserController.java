@@ -1,8 +1,7 @@
 package com.example.twittarablespringboot.controller;
 
 import com.example.twittarablespringboot.entity.Role;
-import com.example.twittarablespringboot.entity.User;
-import com.example.twittarablespringboot.repository.UserRepository;
+import com.example.twittarablespringboot.entity.Users.User;
 import com.example.twittarablespringboot.service.UserService;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,10 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.swing.text.html.HTMLDocument;
 

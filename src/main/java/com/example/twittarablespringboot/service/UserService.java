@@ -1,7 +1,7 @@
 package com.example.twittarablespringboot.service;
 
 import com.example.twittarablespringboot.entity.Role;
-import com.example.twittarablespringboot.entity.User;
+import com.example.twittarablespringboot.entity.Users.User;
 import com.example.twittarablespringboot.repository.UserRepository;
 
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,4 +1,7 @@
-package com.example.twittarablespringboot.entity;
+package com.example.twittarablespringboot.entity.Users;
+
+import com.example.twittarablespringboot.entity.Message;
+import com.example.twittarablespringboot.entity.Role;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cache;
@@ -16,6 +19,7 @@ import java.util.Set;
 @Table(name = "account")
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class User implements UserDetails {
 
     @Id
@@ -45,6 +49,10 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<Message> messages;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_type", nullable = false, insertable = false)
+    private UserType userType;
 
     public Long getId() {
         return id;

@@ -5,7 +5,7 @@
             <div class="col-sm-6">
                 <input class="form-control ${(usernameError??)?string('is-invalid', '')}"
                        type="text" name="username" placeholder="User Name"
-                value="<#if user??>${user.username}</#if>" />
+                       value="<#if user??>${user.username}</#if>" />
             <#if usernameError??>
                 <div class="invalid-feedback">
                     ${usernameError}
@@ -50,6 +50,14 @@
                     </div>
               </#if>
           </div>
+      </div>
+      <div class="col-sm-6">
+          <div class="g-recaptcha" data-sitekey="6LftN28UAAAAAH-i6PmurJGwVx8ioGVijgwY-jEp"></div>
+          <#if captchError??>
+          <div class="alert alert-danger" role="alert">
+              ${captchError}
+          </div>
+          </#if>
       </div>
       </#if>
         <input type="hidden" name="_csrf" value="${_csrf.token}" />

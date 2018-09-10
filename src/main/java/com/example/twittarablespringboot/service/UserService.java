@@ -1,9 +1,10 @@
 package com.example.twittarablespringboot.service;
 
 import com.example.twittarablespringboot.entity.Role;
-import com.example.twittarablespringboot.entity.Users.User;
+import com.example.twittarablespringboot.entity.User;
 import com.example.twittarablespringboot.repository.UserRepository;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +22,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
+
+    @Value("${hostname}")
+    private String hostname;
 
     // In the moment @Autowired is not so cool to use for inject dependencies in needed class. Use constructor's field:)
     private final UserRepository userRepository;
@@ -72,8 +76,9 @@ public class UserService implements UserDetailsService {
             String message = String.format(
                     "Hello, %s! \n" +
                             "Welcome to Twittarable App. Please, to finish registration visit next link:\n" + 
-                            "http://localhost:8080/activation/%s",
+                            "http://%s/activation/%s",
                     user.getUsername(),
+                    hostname,
                     user.getActivationCode()
             );
             mailSenderService.send(user.getEmail(), "Activation code", message);
@@ -143,5 +148,17 @@ public class UserService implements UserDetailsService {
         if (isEmailChanged) {
             sendEmail(user);
         }
+    }
+
+    public void subscribe(User currentUser, User user) {
+
+        user.getSubscribers().add(currentUser);
+        userRepository.save(user);
+    }
+
+    public void unsubscribe(User currentUser, User user) {
+
+        user.getSubscribers().remove(currentUser);
+        userRepository.save(user);
     }
 }

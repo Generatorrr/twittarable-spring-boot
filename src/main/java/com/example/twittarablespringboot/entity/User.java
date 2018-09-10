@@ -1,7 +1,4 @@
-package com.example.twittarablespringboot.entity.Users;
-
-import com.example.twittarablespringboot.entity.Message;
-import com.example.twittarablespringboot.entity.Role;
+package com.example.twittarablespringboot.entity;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cache;
@@ -13,13 +10,13 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "account")
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class User implements UserDetails {
 
     @Id
@@ -50,9 +47,21 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<Message> messages;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "user_type", nullable = false, insertable = false)
-    private UserType userType;
+    @ManyToMany
+    @JoinTable(
+            name = "account_subscriptions",
+            joinColumns = { @JoinColumn(name = "subscriber_id") },
+            inverseJoinColumns = { @JoinColumn(name = "channel_id") }
+    )
+    private Set<User> subscribtions = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "account_subscriptions",
+            joinColumns = { @JoinColumn(name = "channel_id") },
+            inverseJoinColumns = { @JoinColumn(name = "subscriber_id") }
+    )
+    private Set<User> subscribers = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -149,6 +158,22 @@ public class User implements UserDetails {
 
     public void setMessages(Set<Message> messages) {
         this.messages = messages;
+    }
+
+    public Set<User> getSubscribtions() {
+        return subscribtions;
+    }
+
+    public void setSubscribtions(Set<User> subscribtions) {
+        this.subscribtions = subscribtions;
+    }
+
+    public Set<User> getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(Set<User> subscribers) {
+        this.subscribers = subscribers;
     }
 
     @Override

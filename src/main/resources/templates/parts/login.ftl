@@ -27,7 +27,7 @@
         </div>
       <#if isRegisterForm>
       <div class="form-group">
-          <label class="col-sm-2 col-form-label"> Password: </label>
+          <label class="col-sm-2 col-form-label"> Password Confirmation: </label>
           <div class="col-sm-6">
               <input class="form-control ${(password2Error??)?string('is-invalid', '')}"
                      type="password" name="password2" placeholder="Retype password" />
@@ -53,9 +53,9 @@
       </div>
       <div class="col-sm-6">
           <div class="g-recaptcha" data-sitekey="6LftN28UAAAAAH-i6PmurJGwVx8ioGVijgwY-jEp"></div>
-          <#if captchError??>
+          <#if captchaError??>
           <div class="alert alert-danger" role="alert">
-              ${captchError}
+              ${captchaError}
           </div>
           </#if>
       </div>

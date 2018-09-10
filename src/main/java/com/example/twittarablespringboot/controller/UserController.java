@@ -1,7 +1,7 @@
 package com.example.twittarablespringboot.controller;
 
 import com.example.twittarablespringboot.entity.Role;
-import com.example.twittarablespringboot.entity.Users.User;
+import com.example.twittarablespringboot.entity.User;
 import com.example.twittarablespringboot.service.UserService;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -96,7 +96,7 @@ public class UserController {
         return "profile";
     }
 
-    @ApiOperation(value = "Get yourself profile", response = HTMLDocument.class)
+    @ApiOperation(value = "Update your profile", response = HTMLDocument.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
             @ApiResponse(code = 400, message = "Bad request"),
@@ -112,5 +112,45 @@ public class UserController {
         
         userService.updateProfile(user, password, email);
         return "redirect:/user/profile";
+    }
+
+    @GetMapping("/subscribe/{user}")
+    public String subscribe(
+            @PathVariable User user,
+            @AuthenticationPrincipal User currentUser
+
+    ) {
+
+        userService.subscribe(currentUser, user);
+        return "redirect:/user-messages/" + user.getId();
+    }
+
+    @GetMapping("/unsubscribe/{user}")
+    public String unsubscribe(
+            @PathVariable User user,
+            @AuthenticationPrincipal User currentUser
+
+    ) {
+
+        userService.unsubscribe(currentUser, user);
+        return "redirect:/user-messages/" + user.getId();
+    }
+
+    @GetMapping("{type}/{user}/list")
+    public String userList(
+            Model model,
+            @PathVariable User user,
+            @PathVariable String type
+    ) {
+
+        model.addAttribute("userChannel", user);
+
+        if("subscriptions".equals(type)) {
+            model.addAttribute("users", user.getSubscribtions());
+        } else {
+            model.addAttribute("users", user.getSubscribers());
+        }
+
+        return "subscriptions";
     }
 }

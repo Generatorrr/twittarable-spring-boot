@@ -30,7 +30,7 @@ import java.util.Map;
 @Api(value="Registration API", description="Registrations/activations operations")
 public class RegistrationController {
 
-    private final static String CAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?captchaSecret=%s&response=%s";
+    private final static String CAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
 
     @Value("${recaptcha.secret}")
     private String captchaSecret;
@@ -82,7 +82,7 @@ public class RegistrationController {
         if (isPasswordConfirmationEmpty) {
             model.addAttribute("password2Error", "Password confirmation field cannot be empty");
         }
-        if (null != user.getPassword() && user.getPassword().equals(passwordConfirmation)) {
+        if (null != user.getPassword() && !user.getPassword().equals(passwordConfirmation)) {
             model.addAttribute("passwordError", "Passwords are different!");
         }
         if (bindingResult.hasErrors() || isCaptchaFails || isPasswordConfirmationEmpty) {

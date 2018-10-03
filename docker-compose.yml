@@ -2,7 +2,7 @@ version: '2'
 services:
 
   ### Postgres container
-  mysql:
+  postgresql:
         image: postgres
         restart: always
         ports:
@@ -10,7 +10,6 @@ services:
         volumes:
             - /srv/docker/postgresql:/var/lib/postgresql
         environment:
-            - DB_PASS=root
-            - DB_NAME=twittarablespringboot
-            - DB_USER=twittarable
-            - MYSQL_PASSWORD=root
+            - POSTGRES_PASSWORD=root
+            - POSTGRES_DB=twittarablespringboot
+            - POSTGRES_USER=twittarable

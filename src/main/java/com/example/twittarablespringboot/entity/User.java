@@ -25,7 +25,6 @@ public class User implements UserDetails {
     private Long id;
 
     @NotBlank(message = "Username can't be empty")
-    @NotBlank(message = "Username can't be empty")
     private String username;
 
     @NotBlank(message = "Password can't be empty")
